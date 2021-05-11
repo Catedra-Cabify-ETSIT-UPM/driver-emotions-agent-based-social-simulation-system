@@ -1,5 +1,5 @@
 from mesa import Agent, Model 
-from Step import *
+from DrivingStyles import selectDrivingStyle
 
 class DriverAgent(Agent):
 
@@ -23,12 +23,13 @@ class DriverAgent(Agent):
         return emotions
 
     def getPersonality(self, personalityValues):
-        personality_names = ["Impulsiveness", "Confidence", "Tolerance", "Dutifulness", "Neuroticism"]
+        personality_names = ["Extraversion", "Agreeableness", "Conscientiousness", "Neuroticism", "Openness"]
         personality = zip(personality_names, personalityValues)
         return personality  
     
     def step(self):
         #The agent's step is defined here.
-        #gatherData(self)
+        selectDrivingStyle(self, self.emotions, self.personality, self.stress)
+        #getAccidentProbability(self)
         #updateInputs(self)
         pass

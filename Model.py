@@ -5,6 +5,7 @@ from InputValues import *
 
 
 class DrivingModel(Model):
+
     def __init__(self, N):
         self.num_drivers = N
         self.schedule = RandomActivation(self)
