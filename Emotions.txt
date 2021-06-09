@@ -37,7 +37,7 @@ ANGER tends to provoke more driving errors than FEAR
 Types of errors: Lane Keeping (LK), Traffic Rules (TR), Agressive Driving (AD), Collisions (CO)
 
 
-- Emotional states of drivers and the impact on speed, acceleration andtraffic violations
+- Emotional states of drivers and the impact on speed, acceleration andtraffic violations -> COVERS SPEED AND ACCELERATION WITH ANGER, ANXIETY AND FEAR
 ANGER: speed and acceleration increase, more time speeding 
 **Sometimes the presence of another cars interacting with the driver is enough to elicit anger 
 CONTEMPT: similar effects to anger
@@ -47,3 +47,7 @@ ANXIETY: changes driving behaviour often to worse: higher velocities, lateral ac
 **Anxiety was expected to have a positive effect on those basic driving pat-terns due to fearful evaluations but the opposite could be observed
 FRIGHT: stronger braking, reduced speed and stronger lateral acceleration right after the event that provokes the fright elicitation. 
 
+- Effects of emotions on driving behavior ---> COVERS EVERY DRIVING TRAIT RELATED TO ANGER AND HAPPYNESS EXCEPT FOR THE BRAKING
+ANGER, CALMNESS, HAPPYNESS
+ANGER: reaction time (when braking) is low, steering variability is high, speed is high, speed variability (which could be related to acceleration) is high
+HAPPYNESS: high reaction time (not as high as being calm), steering variability is lower than being angry but higher than being calm, speed is low/appropiate, speed variability is low/appropiate
