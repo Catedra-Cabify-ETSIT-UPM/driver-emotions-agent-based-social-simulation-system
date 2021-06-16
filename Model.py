@@ -11,7 +11,7 @@ class DrivingModel(Model):
         self.schedule = RandomActivation(self)
         #Create the drivers (agents)
         for i in range(self.num_drivers):
-            driver_agent = DriverAgent(i, self, stressValue, emotionValues, personalityValues, distractionValue)
+            driver_agent = DriverAgent(i, self, emotionValues,personalityValues, stressValue, distractionValue)
             self.schedule.add(driver_agent)
             
     def step(self):

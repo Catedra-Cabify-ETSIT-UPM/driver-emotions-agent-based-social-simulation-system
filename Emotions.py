@@ -4,72 +4,33 @@ from DrivingTraits import *
 
 def evaluateEmotions(self, emotions):
     #Evaluate happyness
-    if emotions[0] == 1:
-        Speed.SLOW = 0
-        Speed.APPROPIATE = 1 
-        Speed.FAST = 0
-        Acceleration.SLOW = 0 
-        Acceleration.APPROPIATE = 1
-        Acceleration.FAST = 0
-        Braking.GENTLE = 1
-        Braking.ABRUPT = 0
-        SteeringWheel.LOW = 1
-        SteeringWheel.HIGH = 0
-        ResponseTime.LOW = 0
-        ResponseTime.HIGH = 1
+    if emotions["Happyness"] == 1:
+        self.speed.appropiate += 1 
+        self.acceleration.appropiate += 1
+        self.braking.gentle += 1
+        self.steering.low += 1
+        self.rt.high += 1
     #Evaluate fear
-    elif emotions[1] == 1:
-        Speed.SLOW = 1
-        Speed.APPROPIATE = 0 
-        Speed.FAST = 0
-        Acceleration.SLOW = 1 
-        Acceleration.APPROPIATE = 0
-        Acceleration.FAST = 0
-        Braking.GENTLE = 0
-        Braking.ABRUPT = 1
-        SteeringWheel.LOW = 1
-        SteeringWheel.HIGH = 0
-        ResponseTime.LOW = 1
-        ResponseTime.HIGH = 0
+    elif emotions["Fear"] == 1:
+        self.speed.slow += 1
+        self.acceleration.slow += 1 
+        self.braking.abrupt += 1
+        self.steering.low += 1
+        self.rt.low += 1
     #Evaluate anger
-    elif emotions[2] == 1:
-        Speed.SLOW = 0
-        Speed.APPROPIATE = 0 
-        Speed.FAST = 1
-        Acceleration.SLOW = 0 
-        Acceleration.APPROPIATE = 0
-        Acceleration.FAST = 1
-        Braking.GENTLE = 0
-        Braking.ABRUPT = 1
-        SteeringWheel.LOW = 0
-        SteeringWheel.HIGH = 1
-        ResponseTime.LOW = 1
-        ResponseTime.HIGH = 0
+    elif emotions["Anger"] == 1:
+        self.speed.fast += 1
+        self.acceleration.fast += 1
+        self.braking.abrupt += 1
+        self.steering.high += 1
+        self.rt.low += 1
     #Evaluate anxiety
-    elif emotions[3] == 1:
-        Speed.SLOW = 0
-        Speed.APPROPIATE = 0 
-        Speed.FAST = 1
-        Acceleration.SLOW = 0 
-        Acceleration.APPROPIATE = 0
-        Acceleration.FAST = 1
-        Braking.GENTLE = 0
-        Braking.ABRUPT = 1
-        SteeringWheel.LOW = 0
-        SteeringWheel.HIGH = 1
-        ResponseTime.LOW = 0
-        ResponseTime.HIGH = 1
+    elif emotions["Anxiety"] == 1:
+        self.speed.fast += 1
+        self.acceleration.fast += 1
+        self.braking.abrupt += 1
+        self.steering.high += 1
+        self.rt.high += 1
     #Default case
     else:
-        Speed.SLOW = 0
-        Speed.APPROPIATE = 0 
-        Speed.FAST = 0
-        Acceleration.SLOW = 0 
-        Acceleration.APPROPIATE = 0
-        Acceleration.FAST = 0
-        Braking.GENTLE = 0
-        Braking.ABRUPT = 0
-        SteeringWheel.LOW = 0
-        SteeringWheel.HIGH = 0
-        ResponseTime.LOW = 0
-        ResponseTime.HIGH = 0
+        return
