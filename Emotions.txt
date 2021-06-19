@@ -49,5 +49,5 @@ FRIGHT: stronger braking, reduced speed and stronger lateral acceleration right 
 
 - Effects of emotions on driving behavior ---> COVERS EVERY DRIVING TRAIT RELATED TO ANGER AND HAPPYNESS EXCEPT FOR THE BRAKING
 ANGER, CALMNESS, HAPPYNESS
-ANGER: reaction time (when braking) is low, steering variability is high, speed is high, speed variability (which could be related to acceleration) is high
+ANGER: reaction time (when braking) is low (JUST FOR ONE OF THE SIMULATION SYSTEMS), steering variability is high, speed is high, speed variability (which could be related to acceleration) is high
 HAPPYNESS: high reaction time (not as high as being calm), steering variability is lower than being angry but higher than being calm, speed is low/appropiate, speed variability is low/appropiate

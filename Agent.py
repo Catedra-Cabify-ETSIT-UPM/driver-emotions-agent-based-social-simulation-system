@@ -9,18 +9,18 @@ from AccidentProbability import *
 class DriverAgent(Agent):
 
     #Initializes DriverAgent object 
-    def __init__(self, unique_id, model, emotionValues, personalityValues, stressValue, distractionValue):
+    def __init__(self, unique_id, model, emotionValues, personalityValues, stressValue):
         super().__init__(unique_id, model)
         #An agent is characterized by emotions, personality traits and stress
         #Stress, emotions can vary on each agent's step but personality traits remain constant 
         #Emotions
-        self.emotions = self.getEmotions(emotionValues)
+        self.emotions = emotionValues
         #Personality 
-        self.personality = self.getPersonality(personalityValues)
+        self.personality = personalityValues
         #Stress
         self.stress = stressValue
         #Distraction
-        self.distraction = distractionValue
+        self.distraction = 0
         #Driving traits
         self.speed = Speed()
         self.acceleration = Acceleration()
@@ -29,17 +29,22 @@ class DriverAgent(Agent):
         self.rt = ResponseTime()
         #Accident rate
         self.accidentRate = 0
+        #First emotion/personality/stress evaluation
+        evaluateEmotions(self, self.emotions)
+        evaluatePersonality(self, self.personality)
+        evaluateStress(self, self.stress)
+
         
     def getEmotions(self, emotionValues):
-        emotion_names = ["Happyness", "Fear", "Anger", "Anxiety"]
-        emotions = zip(emotion_names, emotionValues)
+        emotion_names = ["Happiness", "Fear", "Anger", "Anxiety"]
+        emotions = dict(zip(emotion_names, emotionValues))
         return emotions
 
     def getPersonality(self, personalityValues):
         personality_names = ["Extraversion", "Agreeableness", "Conscientiousness", "Neuroticism", "Openness"]
-        personality = zip(personality_names, personalityValues)
+        personality = dict(zip(personality_names, personalityValues))
         return personality  
-    
+
     def step(self):
         #The agent's step is defined here.
         evaluateEmotions(self, self.emotions)

@@ -2,7 +2,6 @@ from DrivingTraits import *
 from Emotions import evaluateEmotions
 from Personality import evaluatePersonality
 from Stress import evaluateStress
-#from random import choice
 
 def biggest(a, b, c):
     # Define a dictionary d with strings 'a','b','c' as keys to associate with values
@@ -26,7 +25,7 @@ def getAcceleration(self, acceleration):
     return maxLevel, maxValue
 
 def getBraking(self, braking):
-    values = {"GENTLE": self.braking.gentle, "ABRUPT": self.braking.appropiate}
+    values = {"GENTLE": self.braking.gentle, "ABRUPT": self.braking.abrupt}
     maxValue = max(values.values())
     maxLevel = [k for k,v in values.items() if v == maxValue]
     return maxLevel, maxValue
@@ -45,15 +44,15 @@ def getRT(self, rt):
 
 def setDrivingStyle(self, speed, acceleration, braking, steering, rt):
     drivingStyle = {}
-    [speedLevel, speedValue] = getSpeed(self, speed)
-    drivingStyle ["Speed " + speedLevel] = speedValue
-    [accelerationLevel, accelerationValue] = getAcceleration(self, acceleration)
-    drivingStyle ["Acceleration " + accelerationLevel] = accelerationValue
-    [brakingLevel, brakingValue] = getBraking(self, braking)
-    drivingStyle ["Braking " + brakingLevel] = brakingValue
-    [steeringLevel, steeringValue] = getSteering(self, steering)
-    drivingStyle ["Steering " + steeringLevel] = steeringValue
-    [rtLevel, rtValue] = getRT(self, rt)
-    drivingStyle ["RT " + rtLevel] = rtValue
+    speedLevel, speedValue = getSpeed(self, speed)
+    drivingStyle ["Speed " + str(speedLevel)] = speedValue
+    accelerationLevel, accelerationValue = getAcceleration(self, acceleration)
+    drivingStyle ["Acceleration " + str(accelerationLevel)] = accelerationValue
+    brakingLevel, brakingValue = getBraking(self, braking)
+    drivingStyle ["Braking " + str(brakingLevel)] = brakingValue
+    steeringLevel, steeringValue = getSteering(self, steering)
+    drivingStyle ["Steering " + str(steeringLevel)] = steeringValue
+    rtLevel, rtValue = getRT(self, rt)
+    drivingStyle ["RT " + str(rtLevel)] = rtValue
     return drivingStyle
 
