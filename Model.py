@@ -26,7 +26,7 @@ class DrivingModel(Model):
         self.add_collectors()
 
     def add_collectors(self):
-        self.driver_collector = DriverCollector(agent_reporters={"Emotions" : lambda a: a.emotions, "Personality" : lambda a: a.personality, "SpeedF" : lambda a: a.speed.fast, "SpeedA" : lambda a: a.speed.appropiate, "SpeedS" : lambda a: a.speed.slow })
+        self.driver_collector = DriverCollector(agent_reporters={"Emotions" : lambda a: a.emotions, "Personality" : lambda a: a.personality, "Stress" : lambda a: a.stress, "Speed" : lambda a: a.speed.dominant, "Acceleration" : lambda a: a.acceleration.dominant, "Braking" : lambda a: a.braking.dominant, "Steering" : lambda a: a.steering.dominant, "Response Time" : lambda a: a.rt.dominant })
 
 
     def load_emotions(self, emotion):

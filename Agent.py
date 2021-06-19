@@ -3,7 +3,7 @@ from DrivingTraits import *
 from Emotions import evaluateEmotions
 from Personality import evaluatePersonality
 from Stress import evaluateStress
-from DrivingStyles import setDrivingStyle
+from DrivingStyles import *
 from AccidentProbability import *
 
 class DriverAgent(Agent):
@@ -12,7 +12,7 @@ class DriverAgent(Agent):
     def __init__(self, unique_id, model, emotionValues, personalityValues, stressValue):
         super().__init__(unique_id, model)
         #An agent is characterized by emotions, personality traits and stress
-        #Stress, emotions can vary on each agent's step but personality traits remain constant 
+        #Stress, distractions can vary on each agent's step but emotions and personality traits remain constant 
         #Emotions
         self.emotions = emotionValues
         #Personality 
@@ -50,15 +50,22 @@ class DriverAgent(Agent):
         evaluateEmotions(self, self.emotions)
         evaluatePersonality(self, self.personality)
         evaluateStress(self, self.stress)
-        drivingStyle = setDrivingStyle(self, self.speed, self.acceleration, self.braking, self.steering, self.rt)
-        if ("Speed FAST" in drivingStyle) or ("Acceleration FAST" in drivingStyle):
-            self.accidentRate = getSpeedFrequency() 
-        elif "Steering HIGH" in drivingStyle:
-            self.accidentRate = getSteeringFrequency()
-        elif "RT HIGH" in drivingStyle:
-            self.accidentRate = getRTFrequency()
-        else: 
-            pass
+
+        self.speed.dominant = getSpeed(self, self.speed)
+        self.acceleration.dominant = getAcceleration(self, self.acceleration)
+        self.braking.dominant = getBraking(self, self.braking)
+        self.steering.dominant = getSteering(self, self.steering)
+        self.rt.dominant = getRT(self, self.rt)
+        #drivingStyle = setDrivingStyle(self, self.speed, self.acceleration, self.braking, self.steering, self.rt)
+
+        # if ("Speed FAST" in drivingStyle) or ("Acceleration FAST" in drivingStyle):
+        #     self.accidentRate = getSpeedFrequency() 
+        # elif "Steering HIGH" in drivingStyle:
+        #     self.accidentRate = getSteeringFrequency()
+        # elif "RT HIGH" in drivingStyle:
+        #     self.accidentRate = getRTFrequency()
+        # else: 
+        #     pass
         #VARIABILITY
         pass
 

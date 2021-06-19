@@ -6,6 +6,8 @@ class Speed():
         self.slow = 0
         self.appropiate = 0
         self.fast = 0
+        self.dominant = ""
+
 
 #Intensity and suddenness when accelerating 
 class Acceleration():
@@ -13,22 +15,27 @@ class Acceleration():
         self.slow = 0
         self.appropiate = 0
         self.fast = 0
+        self.dominant = ""
 
 #Intensity and suddenness when braking 
 class Braking():
     def __init__(self):
         self.gentle = 0
         self.abrupt = 0
+        self.dominant = ""
+
 
 #Movement of the vehicle's wheel 
 class SteeringWheel():
     def __init__(self):
         self.low = 0
         self.high = 0
+        self.dominant = ""
 
 #Response time in stress-related situations on the road
 class ResponseTime():
     def __init__(self):
         self.low = 0
         self.high = 0
+        self.dominant = ""
 
