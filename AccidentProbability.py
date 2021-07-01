@@ -1,8 +1,12 @@
 import csv
+import configparser
+import math
 
 def adaptMean():
-    #3 hour drive
-    drivingTime = 3
+    #Driving time
+    config = configparser.ConfigParser()
+    config.read('general.ini')
+    drivingTime = int(config["DRIVING TIME"]["time"])
     #4 year dataset
     totalHours = 4*365*24
     #Multiplier 
@@ -14,7 +18,7 @@ def getTotalAccidents():
     with open('data/Traffic_Crashes.csv', encoding='UTF-8') as f:
         csvreader = csv.reader(f)
         total_accidents = len(list(csvreader)) - 1
-    print(total_accidents)
+    #print(total_accidents)
     return total_accidents
 
 def getVehicleIndex():
@@ -26,7 +30,7 @@ def getVehicleIndex():
         for i in fields:
             if i == 'V1_Vehicle':
                 index = fields.index(i)
-    print(index)
+    #print(index)
     return index
 
 def getTotalJustifiedAccidents():
@@ -43,15 +47,13 @@ def getTotalJustifiedAccidents():
                 counter += 1
             elif line[index] == unknown_search:
                 counter += 1
-        print(counter)
+        #print(counter)
     total_justified_accidents = total_accidents - counter
-    print(total_justified_accidents)
+    #print(total_justified_accidents)
     return total_justified_accidents
 
 def getSpeedFrequency():
     speed_counter = 0
-    adapter = adaptMean()
-    #total_justified_accidents = getTotalJustifiedAccidents()
     speed_search1 = 'driving too fast for conditions'
     speed_search2 = 'exceeded authorized speed limit'
     speed_search3 = 'operating vehicle in erratic, reckless, careless, negligent or  aggressive manner'
@@ -62,16 +64,12 @@ def getSpeedFrequency():
         for line in csvreader:
             if any(speed_search1 in l for l in map(str.lower, line)) or any(speed_search2 in l for l in map(str.lower, line)) or any(speed_search3 in l for l in map(str.lower, line)) or any(speed_search4 in l for l in map(str.lower, line)) or any(speed_search5 in l for l in map(str.lower, line)):
                 speed_counter += 1
-    print(speed_counter)
+    #print(speed_counter)
     #speed_accProbability = speed_counter/total_justified_accidents
-    speed_rate = speed_counter*adapter
-    print(speed_rate)
-    return speed_rate
+    return speed_counter
 
 def getSteeringFrequency():
     steering_counter = 0
-    adapter = adaptMean()
-    #total_justified_accidents = getTotalJustifiedAccidents()
     steering_search1 = 'made an improper turn'
     steering_search2 = 'failure to keep in proper lane or running off road'
     steering_search3 = 'over-correcting/over-steering'
@@ -81,48 +79,38 @@ def getSteeringFrequency():
         for line in csvreader:
             if any(steering_search1 in l for l in map(str.lower, line)) or any(steering_search2 in l for l in map(str.lower, line)) or any(steering_search3 in l for l in map(str.lower, line)) or any(steering_search4 in l for l in map(str.lower, line)):
                 steering_counter += 1
-    print(steering_counter)
+    #print(steering_counter)
     #steering_accProbability = steering_counter/total_justified_accidents
-    steering_rate = steering_counter*adapter
-    print(steering_rate)
-    return steering_rate
+    return steering_counter
 
 def getRTFrequency():
     RT_counter = 0
-    adapter = adaptMean()
-    #total_justified_accidents = getTotalJustifiedAccidents()
     RT_search1 = 'followed too closely'
     RT_search2 = 'operating vehicle in erratic, reckless, careless, negligent or  aggressive manner'
-    #RT_search3 = ''
     with open('data/Traffic_Crashes.csv', encoding='UTF-8') as f:
         csvreader = csv.reader(f)
         for line in csvreader:
             if any(RT_search1 in l for l in map(str.lower, line)) or any(RT_search2 in l for l in map(str.lower, line)):
                 RT_counter += 1
-    print(RT_counter)
+    #print(RT_counter)
     #RT_accProbability = RT_counter/total_justified_accidents
-    RT_rate = RT_counter*adapter
-    print(RT_rate)
-    return RT_rate
-
+    return RT_counter
 
 def getExternalFactorsIndex():
     index = 0
     with open('data/Traffic_Crashes.csv', encoding='UTF-8') as f:
         csvreader = csv.reader(f)
         fields = next(csvreader)
-        print(fields)
+        #print(fields)
         for i in fields:
             if i == 'V1_Driver1':
                 index = fields.index(i)
-    print(index)
+   #print(index)
     return index
 
 def getExtFactorsFrequency():
-    #total_justified_accidents = getTotalJustifiedAccidents()
     index = getExternalFactorsIndex()
     exf_counter = 0
-    adapter = adaptMean()
     distraction_search = 'INATTENTION/DISTRACTED'
     drinking_search = 'HAD BEEN DRINKING'
     drugs_search = 'DRUG INVOLVEMENT'
@@ -135,16 +123,78 @@ def getExtFactorsFrequency():
                 exf_counter += 1
             elif line[index] == drugs_search:
                 exf_counter += 1
-        print(exf_counter)
+        #print(exf_counter)
     #exf_accProbability = exf_counter/total_justified_accidents
-    exf_rate = exf_counter*adapter
-    print(exf_rate)
-    return exf_rate
+    return exf_counter
+
+def definePoisson(occurrences, frequency):
+    k = occurrences
+    lambdaP = frequency*adaptMean()
+    poissonProbability = ((lambdaP**k)*(math.e**-lambdaP))/(math.factorial(k))
+    return poissonProbability
+
+def poisson(self, speedMaxLevel, steeringMaxLevel, rtMaxLevel, speedMaxValue, steeringMaxValue, rtMaxValue, distraction):
+    speedFrequency = getSpeedFrequency()
+    steeringFrequency = getSteeringFrequency()
+    rtFrequency = getRTFrequency()
+    distractionFrequency = getExtFactorsFrequency()
+    speedProb = 0
+    steeringProb = 0
+    rtProb = 0
+
+    if distraction == 0:
+        if speedMaxLevel == '[\'FAST\']':
+            speedProb = definePoisson(1, speedFrequency)
+        if steeringMaxLevel == '[\'HIGH\']':
+            steeringProb = definePoisson(1, steeringFrequency)
+        if rtMaxLevel == '[\'HIGH\']':
+            rtProb = definePoisson(1, rtFrequency)
+        
+        if (speedProb > 0) and (speedMaxValue >= steeringMaxValue) and (speedMaxValue >= rtMaxValue):
+            self.accidentProbability = speedProb
+            return
+        elif (steeringProb > 0) and (steeringMaxValue > speedMaxValue) and (steeringMaxValue > rtMaxValue):
+            self.accidentProbability = steeringProb
+            return 
+        elif (rtProb > 0) and (rtMaxValue > speedMaxValue) and (rtMaxValue > steeringMaxValue):
+            self.accidentProbability = steeringProb
+            return 
+        else:
+            self.accidentProbability = 0.05
+            return
+
+    elif distraction == 1:
+        distractionProb = definePoisson(1, distractionFrequency)
+        if speedMaxLevel == '[\'FAST\']':
+            speedProb = definePoisson(1, speedFrequency + distractionFrequency)
+        if steeringMaxLevel == '[\'HIGH\']':
+            steeringProb = definePoisson(1, steeringFrequency + distractionFrequency)
+        if rtMaxLevel == '[\'HIGH\']':
+            rtProb = definePoisson(1, rtFrequency + distractionFrequency)
+        
+        if (speedProb > 0) and (speedMaxValue >= steeringMaxValue) and (speedMaxValue >= rtMaxValue):
+            self.accidentProbability = speedProb
+            return
+        elif (steeringProb > 0) and (steeringMaxValue > speedMaxValue) and (steeringMaxValue > rtMaxValue):
+            self.accidentProbability = steeringProb
+            return 
+        elif (rtProb > 0) and (rtMaxValue > speedMaxValue) and (rtMaxValue > steeringMaxValue):
+            self.accidentProbability = rtProb
+            return 
+        else:
+            self.accidentProbability = 0.05 + distractionProb
+            return
+    
+    else: 
+        self.accidentProbability = 0.05
+        return
+
+
 
 #getTotalAccidents()
 #getVehicleIndex()
 #getTotalJustifiedAccidents()
-#getSpeedFrequency()
-#getSteeringFrequency()
-#getRTFrequency()
-#getExtFactorsFrequency()
+# getSpeedFrequency()
+# getSteeringFrequency()
+# getRTFrequency()
+# getExtFactorsFrequency()

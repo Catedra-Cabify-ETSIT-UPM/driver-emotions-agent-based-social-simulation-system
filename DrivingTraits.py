@@ -4,7 +4,7 @@
 class Speed():
     def __init__(self):
         self.slow = 0
-        self.appropiate = 0
+        self.appropriate = 0
         self.fast = 0
         self.dominant = ""
 
@@ -13,7 +13,7 @@ class Speed():
 class Acceleration():
     def __init__(self):
         self.slow = 0
-        self.appropiate = 0
+        self.appropriate = 0
         self.fast = 0
         self.dominant = ""
 

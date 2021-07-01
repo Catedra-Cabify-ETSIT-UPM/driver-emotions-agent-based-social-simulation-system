@@ -5,6 +5,7 @@ from Personality import evaluatePersonality
 from Stress import evaluateStress
 from DrivingStyles import *
 from AccidentProbability import *
+from numpy.random import choice
 
 class DriverAgent(Agent):
 
@@ -28,7 +29,7 @@ class DriverAgent(Agent):
         self.steering = SteeringWheel()
         self.rt = ResponseTime()
         #Accident rate
-        self.accidentRate = 0
+        self.accidentProbability = 0
         #First emotion/personality/stress evaluation
         evaluateEmotions(self, self.emotions)
         evaluatePersonality(self, self.personality)
@@ -47,26 +48,24 @@ class DriverAgent(Agent):
 
     def step(self):
         #The agent's step is defined here.
+        #Emotion contribution
         evaluateEmotions(self, self.emotions)
-        evaluatePersonality(self, self.personality)
+        #Stress contribution
         evaluateStress(self, self.stress)
 
-        self.speed.dominant = getSpeed(self, self.speed)
-        self.acceleration.dominant = getAcceleration(self, self.acceleration)
-        self.braking.dominant = getBraking(self, self.braking)
-        self.steering.dominant = getSteering(self, self.steering)
-        self.rt.dominant = getRT(self, self.rt)
-        #drivingStyle = setDrivingStyle(self, self.speed, self.acceleration, self.braking, self.steering, self.rt)
+        #Characterization of driving styles
+        self.speed.dominant, speedMaxValue = getSpeed(self, self.speed)
+        self.acceleration.dominant, _ = getAcceleration(self, self.acceleration)
+        self.braking.dominant, _  = getBraking(self, self.braking)
+        self.steering.dominant, steeringMaxValue  = getSteering(self, self.steering)
+        self.rt.dominant, rtMaxValue  = getRT(self, self.rt)
 
-        # if ("Speed FAST" in drivingStyle) or ("Acceleration FAST" in drivingStyle):
-        #     self.accidentRate = getSpeedFrequency() 
-        # elif "Steering HIGH" in drivingStyle:
-        #     self.accidentRate = getSteeringFrequency()
-        # elif "RT HIGH" in drivingStyle:
-        #     self.accidentRate = getRTFrequency()
-        # else: 
-        #     pass
-        #VARIABILITY
+        #Accident risk estimation
+        poisson(self, self.speed.dominant, self.steering.dominant, self.rt.dominant, speedMaxValue, steeringMaxValue, rtMaxValue, self.distraction)
+
+        #Update distraction value
+        self.distraction = choice((0, 1), 1, (0.5, 0.5))
+        
         pass
 
 

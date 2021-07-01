@@ -7,8 +7,8 @@ from numpy.random import choice
 def evaluateEmotions(self, emotions):
     #Evaluate happiness
     if int(emotions["happiness"]) == 1:
-        self.speed.appropiate += 1 
-        self.acceleration.appropiate += 1
+        self.speed.appropriate += 1 
+        self.acceleration.appropriate += 1
         self.braking.gentle += 1
         self.steering.low += 1
         self.rt.high += 1
